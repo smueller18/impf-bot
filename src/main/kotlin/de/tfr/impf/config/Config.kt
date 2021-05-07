@@ -1,11 +1,13 @@
 package de.tfr.impf.config
 
+import de.tfr.impf.log
 import java.util.concurrent.TimeUnit
 
 object Config : KProperties() {
 
     init {
         loadProperties("config.properties")
+        log.info { "Loaded properties" }
     }
 
     val mainPageUrl: String by lazyProperty()

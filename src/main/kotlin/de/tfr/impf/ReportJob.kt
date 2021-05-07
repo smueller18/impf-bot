@@ -12,8 +12,7 @@ import java.lang.System.currentTimeMillis
 val log = KotlinLogging.logger("ReportJob")
 
 class ReportJob {
-
-    private var driver: WebDriver = createDriver()
+    private var driver: WebDriver = createDriver(Config.pathDriver)
 
     private val locations = Config.locationList()
     private val personAge = Config.personAge

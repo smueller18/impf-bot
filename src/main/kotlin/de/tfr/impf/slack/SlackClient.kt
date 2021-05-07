@@ -17,9 +17,11 @@ fun main() {
     val slackClient = SlackClient()
 
     slackClient.listChannelIds() // only needed once to find the channel id
-    //slackClient.joinChannel("CE728N1PY") // only needed once
+    slackClient.joinChannel(Config.slackBotChannelReadSmsId) // only needed once
 
-    //slackClient.testConnection() // not needed - only for testing
+    slackClient.testConnection() // not needed - only for testing
+
+    log.info(slackClient.findLasSmsCode())
 }
 
 val log = KotlinLogging.logger("SlackClient")
