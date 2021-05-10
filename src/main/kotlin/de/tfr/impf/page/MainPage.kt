@@ -13,9 +13,12 @@ class MainPage(driver: WebDriver) : AbstractPage(driver) {
     fun open() {
         driver.get(Config.mainPageUrl)
         if (driver is WebStorage) {
+            log.debug { "Delete session and local storage" }
             val webStorage = driver
             webStorage.sessionStorage.clear()
             webStorage.localStorage.clear()
+        } else {
+            log.debug { "Driver is not of type WebStorage" }
         }
     }
 
