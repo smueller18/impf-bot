@@ -1,9 +1,10 @@
 package de.tfr.impf.page
 
 import de.tfr.impf.config.Config
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
-import org.openqa.selenium.html5.WebStorage
+
 
 /**
  * Main page with location selection
@@ -12,9 +13,13 @@ class MainPage(driver: WebDriver) : AbstractPage(driver) {
 
     fun open() {
         driver.get(Config.mainPageUrl)
-        log.debug { "Delete session and local storage" }
-        driver.get("javascript:localStorage.clear();")
-        driver.get("javascript:sessionStorage.clear();")
+        val js: JavascriptExecutor
+        if (driver is JavascriptExecutor) {
+            log.debug { "Delete session and local storage" }
+            js = driver
+            js.executeScript("localStorage.clear();");
+            js.executeScript("sessionStorage.clear();");
+        }
     }
 
     fun chooseState(): WebElement? = findAll("//span[@role='combobox']").firstOrNull()
