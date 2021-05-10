@@ -70,7 +70,7 @@ locations = 69124 Heidelberg[XXXX-XXXX-XXXX],76137 Karlsruhe
 # Waiting time before checking the next location in seconds [s]
 waitingTime = 120
 # Waiting time for a manual user interaction in minutes [m]
-waitingTimeForUserAction = 15
+waitingTimeForUserAction = 30
 # Waiting time in Waiting Room in minutes [m]
 waitingTimeInWaitingRoom = 15
 # Timeout when searching an element on the page in seconds [s]
