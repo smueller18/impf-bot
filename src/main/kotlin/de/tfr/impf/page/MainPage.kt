@@ -12,14 +12,9 @@ class MainPage(driver: WebDriver) : AbstractPage(driver) {
 
     fun open() {
         driver.get(Config.mainPageUrl)
-        if (driver is WebStorage) {
-            log.debug { "Delete session and local storage" }
-            val webStorage = driver
-            webStorage.sessionStorage.clear()
-            webStorage.localStorage.clear()
-        } else {
-            log.debug { "Driver is not of type WebStorage" }
-        }
+        log.debug { "Delete session and local storage" }
+        driver.get("javascript:localStorage.clear();")
+        driver.get("javascript:sessionStorage.clear();")
     }
 
     fun chooseState(): WebElement? = findAll("//span[@role='combobox']").firstOrNull()
