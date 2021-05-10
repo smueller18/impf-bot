@@ -10,6 +10,7 @@ services:
       - SE_EVENT_BUS_HOST=selenium-1
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_SESSION_TIMEOUT=1800
     ports:
       - "5900:5900"
   selenium-1:
@@ -38,6 +39,7 @@ services:
       - SE_EVENT_BUS_HOST=selenium-2
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_SESSION_TIMEOUT=1800
     ports:
       - "5901:5900"
   selenium-2:
@@ -67,6 +69,7 @@ services:
       - SE_EVENT_BUS_HOST=selenium-3
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_SESSION_TIMEOUT=1800
     ports:
       - "5902:5900"
   selenium-3:
@@ -96,6 +99,7 @@ services:
       - SE_EVENT_BUS_HOST=selenium-4
       - SE_EVENT_BUS_PUBLISH_PORT=4442
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+      - SE_NODE_SESSION_TIMEOUT=1800
     ports:
       - "5903:5900"
   selenium-4:
