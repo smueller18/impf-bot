@@ -28,8 +28,7 @@ build
 *.tar.gz
 *.rar
 
-/config.*.properties
-/m/config.*.properties
+config.*.properties
 /config.properties
 
 vnc.passwd
