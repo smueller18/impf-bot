@@ -30,5 +30,5 @@ build
 
 config.*.properties
 /config.properties
-
+codes.json
 vnc.passwd

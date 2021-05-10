@@ -39,6 +39,7 @@ object Config : KProperties() {
     private val waitingTimeForBrowser: Long by lazyLongProperty()
 
     private val waitingTimeInWaitingRoom: Long by lazyLongProperty()
+    private val waitingTimeInWaitingRoomTotal: Long by lazyLongProperty()
 
 
     /**
@@ -52,18 +53,14 @@ object Config : KProperties() {
     fun waitingTimeForUserAction(): Long = TimeUnit.MINUTES.toMillis(waitingTimeForUserAction)
 
     /**
-     * Waiting time in Waiting Room in milliseconds [ms]
+     * Total waiting time in Waiting Room in milliseconds [ms]
      */
-    fun waitingTimeInWaitingRoom(): Long = TimeUnit.MINUTES.toMillis(waitingTimeInWaitingRoom)
-
-
-    val personAge: Int by lazyIntProperty()
-    val email: String by lazyProperty()
+    fun waitingTimeInWaitingRoomTotal(): Long = TimeUnit.MINUTES.toMillis(waitingTimeInWaitingRoomTotal)
 
     /**
-     * Mobile number for sms verification. Numbers after the "+49"
+     * Single waiting time in Waiting Room in milliseconds [ms]
      */
-    val mobileNumber: String by lazyProperty()
+    fun waitingTimeInWaitingRoom(): Long = TimeUnit.SECONDS.toMillis(waitingTimeInWaitingRoom)
 
     val nameDriver: String by lazyProperty()
     val exeDriver: String by lazyProperty()
@@ -73,19 +70,6 @@ object Config : KProperties() {
     val slackBotApiToken: String by lazyProperty()
     private val slackEnabled: Boolean by lazyBoolProperty()
     val slackBotChannel: String by lazyProperty()
-    val slackBotChannelReadSmsName: String by lazyProperty()
-    val slackBotChannelReadSmsId: String by lazyProperty()
-    val readSmsFromSlack: Boolean by lazyBoolProperty()
-
-    fun isTelegramEnabled() = telegramEnabled
-    private val telegramEnabled: Boolean by lazyBoolProperty()
-    val telegramApiToken: String by lazyProperty()
-    val telegramBotUsername: String by lazyProperty()
-    val telegramChatId: String by lazyProperty()
-
-    val userAgent: String by lazyProperty()
-
-    val hasUserAgent = userAgent.isNotEmpty() && userAgent != "default"
 
     /**
      * @locationStatement location name with optional verification code in square brackets. e.g. "69123 Heidelberg[XXXX-XXXX-XXXX]]"

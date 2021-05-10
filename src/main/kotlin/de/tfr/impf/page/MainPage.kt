@@ -3,6 +3,7 @@ package de.tfr.impf.page
 import de.tfr.impf.config.Config
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
+import org.openqa.selenium.html5.WebStorage
 
 /**
  * Main page with location selection
@@ -11,6 +12,11 @@ class MainPage(driver: WebDriver) : AbstractPage(driver) {
 
     fun open() {
         driver.get(Config.mainPageUrl)
+        if (driver is WebStorage) {
+            val webStorage = driver
+            webStorage.sessionStorage.clear()
+            webStorage.localStorage.clear()
+        }
     }
 
     fun chooseState(): WebElement? = findAll("//span[@role='combobox']").firstOrNull()

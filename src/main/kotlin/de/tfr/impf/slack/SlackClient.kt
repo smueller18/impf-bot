@@ -17,11 +17,7 @@ fun main() {
     val slackClient = SlackClient()
 
     slackClient.listChannelIds() // only needed once to find the channel id
-    slackClient.joinChannel(Config.slackBotChannelReadSmsId) // only needed once
-
     slackClient.testConnection() // not needed - only for testing
-
-    log.info(slackClient.findLasSmsCode())
 }
 
 val log = KotlinLogging.logger("SlackClient")
@@ -33,9 +29,6 @@ class SlackClient {
 
     private val slack = Slack.getInstance()
     private val methods: MethodsClient = slack.methods(apiToken)
-
-    private val readSmsChannelId = Config.slackBotChannelReadSmsId
-    private val readSmsChannelName = Config.slackBotChannelReadSmsName
 
     private val messageSsmOK = "sms-ok:"
     private val messageSuffixSMS = "sms:"
@@ -65,12 +58,6 @@ class SlackClient {
         sendToChannel(message)
     }
 
-    fun acceptSms(code: String = "") {
-        sendToSmsChannel(messageSsmOK + code);
-    }
-
-    private fun sendToSmsChannel(message: String) = sendToChannel(message, readSmsChannelName)
-
     private fun sendToChannel(message: String, channelName: String = this.channelName) {
         log.debug { "Sending Slack message: $message" }
         val request = ChatPostMessageRequest.builder()
@@ -79,56 +66,6 @@ class SlackClient {
             .build()
         val response = methods.chatPostMessage(request)
         log.debug { "Slack response: $response" }
-    }
-
-    /**
-     * Fetch conversation history using the ID
-     */
-    fun findLasSmsCode(channel: String = readSmsChannelId): String? {
-        val lastTenMinutes = (System.currentTimeMillis() - (1000 * 10)).toString()
-        val client = Slack.getInstance().methods(apiToken)
-
-        try {
-
-            // Call the chat.postMessage method using the built-in WebClient
-            val result = client.conversationsHistory { r: ConversationsHistoryRequestBuilder ->
-                r
-                    .token(apiToken)
-                    .channel(channel) // Channel-id, not the name!
-                    .latest(lastTenMinutes)
-                    .inclusive(true)
-                    .limit(4)
-            }
-            log.debug { "result: $result" }
-
-            result.messages?.forEach { message ->
-                val text = message.text
-                if (text.startsWith(messageSsmOK)) {
-                    // ignore an already accepted sms
-                    return null
-                }
-                if (text.startsWith(messageSuffixSMS)) {
-                    val smsCode = text.substringAfter(messageSuffixSMS)
-                    return smsCode.ifEmpty { null }
-                }
-            }
-        } catch (e: IOException) {
-            log.error("error: " + e.message, e)
-        } catch (e: SlackApiException) {
-            log.error("error: " + e.message, e)
-        }
-        return null
-    }
-
-    /**
-     * Only needed once to let the bot join to the sms channel
-     */
-    fun joinChannel(channelID: String) {
-        val conversationsJoin =
-            methods.conversationsJoin { r: ConversationsJoinRequest.ConversationsJoinRequestBuilder ->
-                r.channel(channelID)
-            }
-        log.info { "Join response; $conversationsJoin" }
     }
 
     /**
