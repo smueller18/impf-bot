@@ -1,6 +1,7 @@
 package de.tfr.impf.page
 
 import de.tfr.impf.config.Config
+import mu.KotlinLogging
 import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
@@ -10,6 +11,8 @@ import org.openqa.selenium.WebElement
  * Main page with location selection
  */
 class MainPage(driver: WebDriver) : AbstractPage(driver) {
+
+    private val log = KotlinLogging.logger("MainPage")
 
     fun open() {
         driver.get(Config.mainPageUrl)

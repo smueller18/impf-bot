@@ -5,6 +5,7 @@ import de.tfr.impf.page.*
 import de.tfr.impf.selenium.createDriver
 import de.tfr.impf.slack.SlackClient
 import mu.KotlinLogging
+import org.openqa.selenium.JavascriptExecutor
 import org.openqa.selenium.WebDriver
 import java.lang.System.currentTimeMillis
 
@@ -47,6 +48,11 @@ class ReportJob {
 
         takeASeatInWaitingRoom()
 
+        log.debug { "delete window.sessionStorage[\"ets-session-count-down-timer-init\"]" }
+        val js: JavascriptExecutor = driver as JavascriptExecutor
+        js.executeScript("console.log('delete window.sessionStorage[\"ets-session-count-down-timer-init\"]')")
+        js.executeScript("delete window.sessionStorage[\"ets-session-count-down-timer-init\"]")
+
         val locationPage = LocationPage(driver)
         if (locationPage.isDisplayed()) {
             log.debug { "Changed to location page: $location" }
@@ -77,7 +83,7 @@ class ReportJob {
             locationPage.searchForVaccinateDate()
             val bookingPage = BookingPage(driver)
 
-            if (locationPage.hasNoVaccinateDateAvailable() || locationPage.hasVacError()) {
+            if (locationPage.hasNoVaccinateDateAvailable() || locationPage.hasVacError() || locationPage.hasSyntaxError()) {
                 log.debug { "Correct code, but not free vaccination slots: $location" }
             } else if (bookingPage.isDisplayed() && bookingPage.isDisplayingVaccinationDates()) {
                 sendMessageFoundDates(location)

@@ -4,8 +4,11 @@ import mu.KotlinLogging
 import org.openqa.selenium.WebDriver
 import org.openqa.selenium.WebElement
 
-val log = KotlinLogging.logger("LocationPage")
+
+
 class LocationPage(driver: WebDriver) : AbstractPage(driver) {
+
+    val log = KotlinLogging.logger("LocationPage")
 
     fun title(): WebElement? = findAnyBy("//h1")
 
@@ -45,6 +48,8 @@ class LocationPage(driver: WebDriver) : AbstractPage(driver) {
 
     fun hasVacError(): Boolean = findAll("//span[contains(@class, 'text-pre-wrap') and contains(text(), 'Fehler')]").isNotEmpty()
     // log.debug { "app-count-down: ${findAnyBy("//app-count-down")?.text}" }
+
+    fun hasSyntaxError(): Boolean = findAll("//span[contains(@class, 'text-pre-wrap') and contains(text(), 'SyntaxError')]").isNotEmpty()
 
 }
 
