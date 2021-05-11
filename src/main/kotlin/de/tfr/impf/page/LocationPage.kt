@@ -49,7 +49,13 @@ class LocationPage(driver: WebDriver) : AbstractPage(driver) {
     fun hasVacError(): Boolean = findAll("//span[contains(@class, 'text-pre-wrap') and contains(text(), 'Fehler')]").isNotEmpty()
     // log.debug { "app-count-down: ${findAnyBy("//app-count-down")?.text}" }
 
-    fun hasSyntaxError(): Boolean = findAll("//span[contains(@class, 'text-pre-wrap') and contains(text(), 'SyntaxError')]").isNotEmpty()
+    fun hasSyntaxError(): Boolean {
+        var error = findAll("//span[contains(@class, 'text-pre-wrap') and contains(text(), 'SyntaxError')]").isNotEmpty()
+        if(error) {
+            log.debug { "Found SyntaxError" }
+        }
+        return error
+    }
 
 }
 

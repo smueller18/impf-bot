@@ -83,6 +83,9 @@ class ReportJob {
             locationPage.searchForVaccinateDate()
             val bookingPage = BookingPage(driver)
 
+            log.debug { "Waiting for 1s" }
+            Thread.sleep(1000)
+
             if (locationPage.hasNoVaccinateDateAvailable() || locationPage.hasVacError() || locationPage.hasSyntaxError()) {
                 log.debug { "Correct code, but not free vaccination slots: $location" }
             } else if (bookingPage.isDisplayed() && bookingPage.isDisplayingVaccinationDates()) {
