@@ -87,8 +87,8 @@ class ReportJob {
             val bookingPage = BookingPage(driver)
 
             // Wait a little longer because sometimes time to load is a couple of seconds
-            log.debug { "Waiting for 5s" }
-            Thread.sleep(5000)
+            log.debug { "Waiting for 10s" }
+            Thread.sleep(10000)
 
             if (locationPage.hasNoVaccinateDateAvailable() || locationPage.hasVacError() || locationPage.hasSyntaxError()) {
                 log.debug { "Correct code, but not free vaccination slots: $location" }
