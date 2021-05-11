@@ -30,7 +30,7 @@ class ReportJob {
             } catch (e: Exception) {
                 log.error(e) { "Failed to check location: $location\n" + e.message }
             }
-            log.debug { "Waiting for ${Config.waitingTime()/1000}s" }
+            log.debug { "Waiting for ${Config.waitingTime() / 1000}s" }
             Thread.sleep(Config.waitingTime())
         }
     }
@@ -41,17 +41,20 @@ class ReportJob {
         val cookieNag = CookieNagComponent(driver)
         mainPage.isDisplayed()
         mainPage.chooseLocation(location.name)
-        log.debug { "Waiting for ${Config.waitingTimeForBrowser()/1000}s" }
+        log.debug { "Waiting for ${Config.waitingTimeForBrowser() / 1000}s" }
         Thread.sleep(Config.waitingTimeForBrowser())
         cookieNag.acceptCookies()
         mainPage.submitLocation()
 
         takeASeatInWaitingRoom()
 
+        // Delete session storage count-down-timer due to wrong display of count down timer
         log.debug { "delete window.sessionStorage[\"ets-session-count-down-timer-init\"]" }
         val js: JavascriptExecutor = driver as JavascriptExecutor
         js.executeScript("console.log('delete window.sessionStorage[\"ets-session-count-down-timer-init\"]')")
         js.executeScript("delete window.sessionStorage[\"ets-session-count-down-timer-init\"]")
+
+        cookieNag.acceptCookies()
 
         val locationPage = LocationPage(driver)
         if (locationPage.isDisplayed()) {
@@ -66,7 +69,7 @@ class ReportJob {
         val waitingRoom = WaitingRoomPage(driver)
         val waitingTimeEnd = currentTimeMillis() + Config.waitingTimeInWaitingRoomTotal()
         while (waitingRoom.isDisplayed() && currentTimeMillis() < waitingTimeEnd) {
-            log.debug { "Waiting in WaitingRoomPage for ${Config.waitingTimeInWaitingRoom()/1000}s (time remaining: ${(waitingTimeEnd - currentTimeMillis())/1000/60}m) ..." }
+            log.debug { "Waiting in WaitingRoomPage for ${Config.waitingTimeInWaitingRoom() / 1000}s (time remaining: ${(waitingTimeEnd - currentTimeMillis()) / 1000 / 60}m) ..." }
             Thread.sleep(Config.waitingTimeInWaitingRoom())
         }
     }
@@ -83,8 +86,9 @@ class ReportJob {
             locationPage.searchForVaccinateDate()
             val bookingPage = BookingPage(driver)
 
-            log.debug { "Waiting for 1s" }
-            Thread.sleep(1000)
+            // Wait a little longer because sometimes time to load is a couple of seconds
+            log.debug { "Waiting for 5s" }
+            Thread.sleep(5000)
 
             if (locationPage.hasNoVaccinateDateAvailable() || locationPage.hasVacError() || locationPage.hasSyntaxError()) {
                 log.debug { "Correct code, but not free vaccination slots: $location" }
