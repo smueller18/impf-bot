@@ -15,12 +15,10 @@ class MainPage(driver: WebDriver) : AbstractPage(driver) {
         driver.get(Config.mainPageUrl)
         val js: JavascriptExecutor
         if (driver is JavascriptExecutor) {
-            log.debug { "Delete session and local storage" }
+            log.debug { "delete window.sessionStorage[\"ets-session-count-down-timer-init\"]" }
             js = driver
-            js.executeScript("console.log('delete session storage')")
+            js.executeScript("console.log('delete window.sessionStorage[\"ets-session-count-down-timer-init\"]')")
             js.executeScript("delete window.sessionStorage[\"ets-session-count-down-timer-init\"]")
-            //js.executeScript("localStorage.clear();");
-            //js.executeScript("sessionStorage.clear();");
         }
     }
 
