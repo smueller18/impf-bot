@@ -46,7 +46,7 @@ class LocationPage(driver: WebDriver) : AbstractPage(driver) {
         // Wait for displaying button 'Termine suchen' because it sometimes loads for a couple of seconds
         val waitingTimeout = System.currentTimeMillis() + 30 * 1000
         while (findAll("//button[contains(text(),'Termine suchen')]").isEmpty() && System.currentTimeMillis() < waitingTimeout) {
-            log.debug { "Waiting 2s for displaying button 'Termine suchen', remaining time: ${(waitingTimeout - System.currentTimeMillis()) / 1000}" }
+            log.debug { "Waiting 2s for displaying button 'Termine suchen', remaining time: ${(waitingTimeout - System.currentTimeMillis()) / 1000}s" }
             Thread.sleep(2000)
         }
         if(findAll("//button[contains(text(),'Termine suchen')]").isEmpty()) {
