@@ -17,8 +17,10 @@ class MainPage(driver: WebDriver) : AbstractPage(driver) {
         if (driver is JavascriptExecutor) {
             log.debug { "Delete session and local storage" }
             js = driver
-            js.executeScript("localStorage.clear();");
-            js.executeScript("sessionStorage.clear();");
+            js.executeScript("console.log('delete session storage')")
+            js.executeScript("delete window.sessionStorage[\"ets-session-count-down-timer-init\"]")
+            //js.executeScript("localStorage.clear();");
+            //js.executeScript("sessionStorage.clear();");
         }
     }
 

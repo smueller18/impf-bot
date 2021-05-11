@@ -14,13 +14,12 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
-fun createDriver(host: String): WebDriver {
+fun createDriverGrid(): WebDriver {
     try {
-        val nodeURL = "http://" + host + "/wd/hub";
+        val nodeURL = "http://" + Config.pathDriver + "/wd/hub";
         val capability = DesiredCapabilities.chrome();
         capability.setBrowserName("chrome");
         val chromeDriver = RemoteWebDriver(URL(nodeURL), capability);
-
         chromeDriver.setTimeOut(Config.searchElementTimeout())
         return chromeDriver
     } catch (e: MalformedURLException) {
@@ -29,7 +28,10 @@ fun createDriver(host: String): WebDriver {
     }
 }
 
-fun createDriver(): ChromeDriver {
+fun createDriver(): WebDriver {
+    if (Config.pathDriver.contains(":")) {
+        return createDriverGrid()
+    }
     System.setProperty(Config.nameDriver, Config.pathDriver + Config.exeDriver)
     val chromeOptions = ChromeOptions()
     val chromeDriver = ChromeDriver(chromeOptions)
